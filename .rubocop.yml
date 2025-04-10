@@ -1,0 +1,24 @@
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.1
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - spec/**/*
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
+  Max: 25
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
