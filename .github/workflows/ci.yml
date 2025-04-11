@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: "Ruby ${{ matrix.ruby }} / ${{ matrix.database.name }} ${{ matrix.database.version }}"
+    strategy:
+      matrix:
+        ruby:
+          - '3.4'
+          - '3.3'
+          - '3.2'
+        database: [
+          { name: "redis", image: "redis", version: "7.2" },
+          { name: "valkey", image: "valkey/valkey", version: "8" },
+          { name: "dragonflydb", image: "docker.dragonflydb.io/dragonflydb/dragonfly", version: "v1.27.0" },
+        ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.8.0
+        with:
+          redis-image: ${{ matrix.database.image }}
+          redis-version: ${{ matrix.database.version }}
+      - name: Run tests
+        run: bundle exec rake
