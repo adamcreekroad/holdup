@@ -14,8 +14,14 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.4.2'
-
+          - '3.4'
+          - '3.3'
+          - '3.2'
+    services:
+      redis:
+        image: redis:7.2
+        ports: ["6379:6379"]
+        options: --entrypoint redis-server
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
